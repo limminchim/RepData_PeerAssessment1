@@ -1,13 +1,6 @@
----
-title: "Reproducible Research: Peer Assessment 1"
-output: 
-  html_document:
-    keep_md: true
----
+# Reproducible Research: Peer Assessment 1
 
-```{r load_packages, include=FALSE}
-library(broman)
-```
+
 
 ## Introduction
 
@@ -28,7 +21,8 @@ The variables included in this dataset are:
 The dataset is stored in a comma-separated-value (CSV) file and there are a total of 17,568 observations in this dataset.
 
 ## Loading and preprocessing the data
-```{r, echo=TRUE}
+
+```r
 # Read the data from file
 setwd("./")  
 activity_data = read.csv(unz("activity.zip", "activity.csv"),stringsAsFactors = F)
@@ -36,22 +30,43 @@ activity_data = read.csv(unz("activity.zip", "activity.csv"),stringsAsFactors = 
 activity_data$date <- as.Date(activity_data$date, "%Y-%m-%d")
 #activity_data$steps[is.na(activity_data$steps)] = 0
 head(activity_data)
+```
+
+```
+##   steps       date interval
+## 1    NA 2012-10-01        0
+## 2    NA 2012-10-01        5
+## 3    NA 2012-10-01       10
+## 4    NA 2012-10-01       15
+## 5    NA 2012-10-01       20
+## 6    NA 2012-10-01       25
+```
+
+```r
 str(activity_data)
 ```
 
+```
+## 'data.frame':	17568 obs. of  3 variables:
+##  $ steps   : int  NA NA NA NA NA NA NA NA NA NA ...
+##  $ date    : Date, format: "2012-10-01" "2012-10-01" ...
+##  $ interval: int  0 5 10 15 20 25 30 35 40 45 ...
+```
+
 ## What is mean total number of steps taken per day?
-```{r, echo=TRUE}
+
+```r
 # Organize the date by days, ignoring the missing values
 # Calculate and report the mean and median total number of steps taken per day
 sum_steps_per_day <- aggregate(steps ~ date, data = activity_data, sum)
 mean_steps = as.integer(mean(sum_steps_per_day$step, na.rm = T))
 median_steps = as.integer(median(sum_steps_per_day$step, na.rm = T))
-
 ```
-- The mean total number of steps taken per day is `r myround(mean_steps, 2)`.  
-- The median total number of steps taken per day is `r myround(median_steps, 2)`.
+- The mean total number of steps taken per day is 10766.00.  
+- The median total number of steps taken per day is 10765.00.
 
-```{r, echo=TRUE}
+
+```r
 # Plot histogram of the total number of steps taken each day
 hist(sum_steps_per_day$steps, 
      main="Total Number of Steps Taken Each Day",
@@ -59,11 +74,13 @@ hist(sum_steps_per_day$steps,
      col = "red",
      xlab = "total number of steps taken per day"
      ) 
-
 ```
 
+![](PA1_template_files/figure-html/unnamed-chunk-3-1.png) 
+
 ## What is the average daily activity pattern?
-```{r, echo=TRUE}
+
+```r
 # Organize the data by daily time series
 daily_steps <- aggregate(steps ~ interval, data = activity_data, mean)
 # Make a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis)
@@ -82,24 +99,33 @@ text(x = daily_steps[daily_steps$steps == max(daily_steps$steps),1],
      cex= 0.7, offset = 10)
 ```
 
+![](PA1_template_files/figure-html/unnamed-chunk-4-1.png) 
+
 Which 5-minute interval (on average across all the days in the dataset) contains the maximum number of steps?
-```{r, echo=TRUE}
+
+```r
 maximun_activity_pattern  = daily_steps[daily_steps$steps == max(daily_steps$steps),1]
 ```
-The `r maximun_activity_pattern`th 5-minute interval contains the maximum number of steps.
+The 835th 5-minute interval contains the maximum number of steps.
 
 ## Imputing missing values
 Note that there are a number of days/intervals where there are missing values (coded as NA). The presence of missing days may introduce bias into some calculations or summaries of the data.
 
-```{r, echo=TRUE}
+
+```r
 # Calculate and report the total number of missing values in the dataset (i.e. the total number of rows with NAs)
 NA_num = sum(is.na(activity_data$steps))
 print(NA_num)
 ```
-The total number of missing values in the dataset is `r NA_num`.
+
+```
+## [1] 2304
+```
+The total number of missing values in the dataset is 2304.
 
 The strategy selected to fill-in all of the missing values in the dataset is to replace with the mean for that 5-minute interval.
-```{r, echo=TRUE}
+
+```r
 # Create a new dataset that is equal to the original dataset but with the missing data filled-in
 new_activity_data <- activity_data
 for (i in 1:length(new_activity_data$steps)) {
@@ -122,17 +148,31 @@ hist(new_sum_steps_per_day$steps,
      ) 
 ```
 
-```{r, echo=TRUE}
+![](PA1_template_files/figure-html/unnamed-chunk-7-1.png) 
+
+
+```r
 # Calculate and report the mean and median total number of steps taken per day
 new.total.daily.steps <- as.numeric(tapply(new_activity_data$steps, 
                                        new_activity_data$date, sum))
 new.step.mean <- mean(new.total.daily.steps)
 new.step.median <- median(new.total.daily.steps)
 print(new.step.mean)
+```
+
+```
+## [1] 10766.19
+```
+
+```r
 print(new.step.median)
 ```
 
-After replacing `r myround(NA_num, 2)` missing values with mean value of that interval, the mean total number of steps taken per day was `r myround(new.step.mean, 2)`, and the median total number of steps taken per day was `r myround(new.step.median, 2)`. 
+```
+## [1] 10766.19
+```
+
+After replacing 2304.00 missing values with mean value of that interval, the mean total number of steps taken per day was 10766.19, and the median total number of steps taken per day was 10766.19. 
 It is observed that by imputing missing values, the mean value remains the same while the median increased by a little.
 
 ### What is the impact of imputing missing data on the estimates of the total daily number of steps?
@@ -147,7 +187,8 @@ For this part the weekdays() function and the dataset with the filled-in missing
 The appraoch is to split the data by week_label and time interval, then calculate the mean steps for each combine of weeklabel and time interval, using lattice to give a plot to visually show the answer.
 
 
-```{r, echo=TRUE}
+
+```r
 # Using the dataset with the filled-in missing values, create a new factor variable in the dataset with two levels - "weekday" and "weekend" indicating whether a given date is a weekday or weekend day.
 weekdays = c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
 weekends = c("Saturday", "Sunday")
@@ -173,8 +214,9 @@ xyplot(steps ~ interval|week_labels,
        xlab = "Interval",
        ylab = "Number of steps",
        layout=c(1,2))
-
 ```
+
+![](PA1_template_files/figure-html/unnamed-chunk-9-1.png) 
 
 - It is observed that people get more active on weekends, probably due to them having more avaliable time on weekend.
 - It is observed that at the graph above that activity on the weekday has the greatest peak from all steps intervals. 
