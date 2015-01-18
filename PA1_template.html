@@ -117,7 +117,8 @@ hist(sum_steps_per_day$steps,
 <h2>What is the average daily activity pattern?</h2>
 <pre class="r"><code># Organize the data by daily time series
 daily_steps &lt;- aggregate(steps ~ interval, data = activity_data, mean)
-# Make a time series plot (i.e. type = &quot;l&quot;) of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis)
+# Make a time series plot (i.e. type = &quot;l&quot;) of the 5-minute interval (x-axis) 
+# and the average number of steps taken, averaged across all days (y-axis)
 plot(daily_steps$interval, 
      daily_steps$steps,
      type = &quot;l&quot;,
@@ -139,7 +140,8 @@ text(x = daily_steps[daily_steps$steps == max(daily_steps$steps),1],
 <div id="imputing-missing-values" class="section level2">
 <h2>Imputing missing values</h2>
 <p>Note that there are a number of days/intervals where there are missing values (coded as NA). The presence of missing days may introduce bias into some calculations or summaries of the data.</p>
-<pre class="r"><code># Calculate and report the total number of missing values in the dataset (i.e. the total number of rows with NAs)
+<pre class="r"><code># Calculate and report the total number of missing values in the dataset
+# (i.e. the total number of rows with NAs)
 NA_num = sum(is.na(activity_data$steps))
 print(NA_num)</code></pre>
 <pre><code>## [1] 2304</code></pre>
@@ -186,7 +188,9 @@ print(new.step.mean)</code></pre>
 <h2>Are there differences in activity patterns between weekdays and weekends?</h2>
 <p>For this part the weekdays() function and the dataset with the filled-in missing values is used.</p>
 <p>The appraoch is to split the data by week_label and time interval, then calculate the mean steps for each combine of weeklabel and time interval, using lattice to give a plot to visually show the answer.</p>
-<pre class="r"><code># Using the dataset with the filled-in missing values, create a new factor variable in the dataset with two levels - &quot;weekday&quot; and &quot;weekend&quot; indicating whether a given date is a weekday or weekend day.
+<pre class="r"><code># Using the dataset with the filled-in missing values, create a new factor 
+# variable in the dataset with two levels - &quot;weekday&quot; and &quot;weekend&quot; indicating 
+# whether a given date is a weekday or weekend day.
 weekdays = c(&quot;Monday&quot;, &quot;Tuesday&quot;, &quot;Wednesday&quot;, &quot;Thursday&quot;, &quot;Friday&quot;)
 weekends = c(&quot;Saturday&quot;, &quot;Sunday&quot;)
 

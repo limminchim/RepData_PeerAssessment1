@@ -83,7 +83,8 @@ hist(sum_steps_per_day$steps,
 ```r
 # Organize the data by daily time series
 daily_steps <- aggregate(steps ~ interval, data = activity_data, mean)
-# Make a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis)
+# Make a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) 
+# and the average number of steps taken, averaged across all days (y-axis)
 plot(daily_steps$interval, 
      daily_steps$steps,
      type = "l",
@@ -113,7 +114,8 @@ Note that there are a number of days/intervals where there are missing values (c
 
 
 ```r
-# Calculate and report the total number of missing values in the dataset (i.e. the total number of rows with NAs)
+# Calculate and report the total number of missing values in the dataset
+# (i.e. the total number of rows with NAs)
 NA_num = sum(is.na(activity_data$steps))
 print(NA_num)
 ```
@@ -189,7 +191,9 @@ The appraoch is to split the data by week_label and time interval, then calculat
 
 
 ```r
-# Using the dataset with the filled-in missing values, create a new factor variable in the dataset with two levels - "weekday" and "weekend" indicating whether a given date is a weekday or weekend day.
+# Using the dataset with the filled-in missing values, create a new factor 
+# variable in the dataset with two levels - "weekday" and "weekend" indicating 
+# whether a given date is a weekday or weekend day.
 weekdays = c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
 weekends = c("Saturday", "Sunday")
 
