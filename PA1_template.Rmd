@@ -181,3 +181,5 @@ xyplot(steps ~ interval|week.labels,
 - It is observed that people are more active on weekends. This may be because they have more available free time to engage in exercise activities on weekends.
 - It is observed that the highest activity peak (> 200 steps) is found during weekdays. 
 - However, there are more number of activity peaks ( > 100 steps) during weekends as compared with the weekdays. This may be weekday activities are work-related and not very intensive while people usually engage in sports activities on weekends.
+
+
